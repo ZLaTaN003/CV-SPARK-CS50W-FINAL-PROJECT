@@ -1,0 +1,75 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block staticpart %}
+<style>
+
+
+.section-item {
+        background-color: #f7f7f7;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+.section-name {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+.section-description {
+        margin: 10px 0;
+    }
+
+.leave-section-form,
+.join-section-form {
+        display: inline-block;
+    }
+
+.leave-button,
+.join-button {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+    }
+
+.view-button {
+        background-color:#1dbf73 ;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+    }
+
+</style>
+
+{% endblock  %}
+{% block body %}
+
+<div class="section-list">
+    {% for section in sections %}
+        <div class="section-item">
+            <h3 class="section-name">{{ section.name }}</h3>
+            <p class="section-description">{{ section.description }}</p>
+            {% if section in user_sections %}
+                <form class="leave-section-form" action="{% url 'leave_section' section.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="leave-button" type="submit">Leave</button>
+                </form>
+                <a class="view-button" href="{% url 'section_users' section.id %}">View Team</a>
+                
+
+            {% else %}
+                <form class="join-section-form" action="{% url 'join_section' section.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="join-button" type="submit">Join</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}

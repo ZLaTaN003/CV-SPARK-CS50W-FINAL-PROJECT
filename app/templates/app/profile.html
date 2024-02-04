@@ -1,0 +1,71 @@
+{% extends "app/layout.html" %}
+{% load static %}
+{% block staticpart %}
+
+  
+
+<link href="{% static 'app/profile.css' %}" rel="stylesheet">
+
+
+{% endblock  %}
+
+{% block body %}
+    <div class="profile-container">
+        <h2>Profile</h2>
+        {% if user_profile.profile_picture %}
+        <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+    {% endif %}
+        <h2> Name :{{ user_profile.user.username }}</h2>
+        <p>Email: {{ user_profile.user.email }}</p>
+        {% if  not user_profile.bio %}
+        <p>Bio: N/A</p>
+
+       {% endif %}
+
+       {% if  not user_profile.birthdate %}
+       <p>DOB: N/A</p>
+
+   {% endif %}
+
+        {% if user_profile.bio %}
+            <p class="user-bio">Bio: {{ user_profile.bio }}</p>
+        {% endif %}
+
+        {% if user_profile.birthdate %}
+            <p class="user-birthdate">DOB:  {{ user_profile.birthdate }}</p>
+        {% endif %}
+
+     
+
+        <h3>Edit Your Profile</h3>
+        <button id="edit-button" class="btn btn-primary">Edit</button>
+        <form class="edit-profile-form"  id="edit-profile-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group">
+                {{ form.bio.label_tag }}
+                {{ form.bio }}
+                {{ form.bio.errors }}
+            </div>
+            <div class="form-group">
+              DOB ( YYYY-MM-DD ):
+              <input type="text" id="datepicker" name="birthdate">
+              {{ form.birthdate.errors }}
+          </div>
+          
+            <div class="form-group">
+              {{ form.profile_picture }}
+              {{ form.profile_picture.errors }}
+          </div>
+          
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+    <script>
+      $(function() {
+          $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+      });
+  </script>
+  
+{% endblock %}
+

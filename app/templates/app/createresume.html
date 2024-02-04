@@ -1,0 +1,53 @@
+{% extends "app/layout.html" %}
+{% load static %}
+{% block title %}CreateResume{% endblock %}
+
+{% block body %}
+<form method="POST" id="resumeForm">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your Name" >
+        <span class="errorforresume" id="nameError"></span>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email" >
+        <span class="errorforresume" id="emailError"></span>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Your Phone Number" >
+        <span class="errorforresume" id="phoneError"></span>
+    </div>
+    <div class="form-group">
+        <label for="about">About</label>
+        <textarea class="form-control" id="about" name="about" placeholder="Tell Something About Yourself"></textarea>
+        <span class="errorforresume" id="aboutError"></span>
+    </div>
+    <div class="form-group">
+        <label for="skills">Skills</label>
+        <textarea class="form-control" id="skills" name="skills" placeholder="What are Your Skills" ></textarea>
+        <span class="errorforresume" id="skillsError"></span>
+    </div>
+    <div class="form-group">
+        <label for="degree">Education</label>
+        <input type="text" class="form-control" id="degree" name="degree" placeholder="What is Your Highest level of Education" >
+        <span class="errorforresume" id="degreeError"></span>
+    </div>
+    <div class="form-group">
+        <label for="university">University</label>
+        <input type="text" class="form-control" id="university" name="university" placeholder="University name" >
+        <span class="errorforresume" id="universityError"></span>
+    </div>
+    <div class="form-group">
+        <label for="experience">Experience</label>
+        <textarea class="form-control" id="experience" name="experience" placeholder="What's Your Previous Experience" ></textarea>
+        <span class="errorforresume" id="experienceError"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+{% endblock %}

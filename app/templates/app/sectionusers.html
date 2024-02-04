@@ -1,0 +1,63 @@
+
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block staticpart %}
+<style>
+
+
+.section-item {
+        background-color: #f7f7f7;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+
+
+
+
+
+.download-button {
+        background-color: #1dbf73;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+    }
+
+.view-button {
+        background-color:#1dbf73 ;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+    }
+
+</style>
+
+{% endblock  %}
+{% block body %}
+   <h3>{{section.name}}</h3>
+<div class="section-list">
+    {% for user in users%}
+        <div class="section-item">
+            <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}"width=200 height=200>
+            <p>{{ user.username }}</p>
+            <p>{{user.userprofile.bio}}</p>
+            
+        {% for cv in user.user_candidate.all %}
+        <div>
+            <h3>CV</h3>
+            <a href="{% url 'cv' cv.id %}" class="view-button">View CV</a>
+            <a href="{% url 'cvtopdf' cv.id %}" class="download-button">Download CV</a>
+        </div>
+        {% endfor %}
+
+        </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}

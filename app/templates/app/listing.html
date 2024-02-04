@@ -1,0 +1,85 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+  {% for mycv in cvs %}
+  <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 15px; margin-bottom: 10px;">
+    
+      <div>
+        <h2>{{ mycv.name }}</h2>
+      </div>
+      <div>
+        <a href="{% url 'cv' mycv.id %}" class="btn btn-success">View</a>
+        <a href="{% url 'cvtopdf' mycv.id %}" class="btn btn-success" style="margin-left: 30px;">Download</a>
+
+        <span style="color: #777; font-size: 14px; margin-left: 30px;">post:{{mycv.user}}</span>
+        <br>
+        {% if theuser == mycv.user %}
+        <br>
+        <form action="{% url 'edit' mycv.id %}" method='POST'>
+            {% csrf_token %}
+            <button type='submit' class='btn-danger'>Remove</button>
+            {% endif %}
+    </form>
+      </div>
+      
+    </div>
+ 
+      
+    <div>
+        <form id="like-form-{{ mycv.id }}" method="post" action="{% url 'like-cv' mycv.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="cv_id" value="{{ mycv.id }}">
+            <button class="btn btn-link like-button" data-cv-id="{{ mycv.id }}">
+                {% if mycv.liked %}
+                    <i class="fas fa-arrow-up"></i> 
+                {% else %}
+                    <i class="fas fa-arrow-up"></i>
+                {% endif %}Upvote
+            </button>
+            <span class="like-count"> {{mycv.like_count}}</span> likes
+        </form>
+    </div>
+    
+  
+    <br>
+  {% endfor %}
+  
+</div>
+
+<script>
+  
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButtons = document.querySelectorAll('.like-button');
+        likeButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const cvId = this.getAttribute('data-cv-id');
+                const likeForm = document.getElementById('like-form-' + cvId);
+                const likeCountElement = likeForm.querySelector('.like-count');
+    
+                fetch(likeForm.action, {
+                    method: 'POST',
+                    body: new FormData(likeForm),
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.liked) {
+                            likeCountElement.textContent = data.like_count;
+                            
+                        } else {
+                            likeCountElement.textContent = data.like_count;
+                            
+                        }
+                    })
+                    .catch(error => console.error(error));
+            });
+        });
+    });
+    
+</script>
+{% endblock %}

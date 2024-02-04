@@ -1,0 +1,72 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block title %}
+    <title>Job Listings</title>
+{% endblock %}
+
+{% block staticpart %}
+<style>
+
+body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+    
+h1 {
+        background-color: #1dbf73;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        margin: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <h1>Job Listings</h1>
+    <ul>
+        {% for job in job_list %}
+            
+                <div id="image{{ job.id }}" class="job-image"></div>
+
+                <div class="job-details">
+                    <h5 style="font-weight: bold;">{{ job.title }}</h5><br>
+                    <strong>Company:</strong> {{ job.company.display_name }}<br>
+                    <strong>Location:</strong> {{ job.location.display_name }}<br>
+                    <strong>Description:</strong> {{ job.description }}<br>
+                    <strong>Posted Date:</strong> {{ job.created|slice:":-10" }}<br>
+                    <br>
+                    <a href="{{ job.redirect_url }}" class="btn-success">Apply</a><br>
+
+                </div>
+                <script>
+                    function fetchUnsplashImage(jobId) {
+                        fetch('https://api.unsplash.com/photos/random?query=office', {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': 'Client-ID T-kdVV1vt14rTjq1oaS2qdsuie9WwohJRfSueY60pOE'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            const imageUrl = data.urls.regular;
+                            const img = document.createElement('img');
+                            img.src = imageUrl;
+                            img.style.maxWidth = '280px';
+                            img.style.maxHeight = '280px';
+                            document.getElementById('image' + jobId).appendChild(img);
+                        })
+                        .catch(error => console.error(error));
+                    }
+                    fetchUnsplashImage({{ job.id }});
+               
+                </script>
+            
+            <br>
+            <hr>
+        {% endfor %}
+    </ul>
+{% endblock %}
