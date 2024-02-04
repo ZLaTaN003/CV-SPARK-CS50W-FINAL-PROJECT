@@ -134,3 +134,6 @@ Pictures This is the medial root of my project
        python manage.py runserver to Run
 
 
+
+video link
+https://youtu.be/b8Ll5m0Nnao?si=pcCMrHPTklIqPwFL
